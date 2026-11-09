@@ -1,0 +1,289 @@
+/* ==========================================================================
+   NovaMart — Core Script
+   Loading screen, navbar, dark mode, mobile menu, reveal animations,
+   countdown, testimonial slider, quick view modal, toast, ripple.
+   ========================================================================== */
+
+/* ---------- Loading Screen ---------- */
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loading-screen');
+  if (loader) setTimeout(() => loader.classList.add('hidden'), 400);
+});
+
+/* ---------- Navbar scroll state ---------- */
+const navbar = document.querySelector('.navbar');
+function handleNavScroll() {
+  if (!navbar) return;
+  navbar.classList.toggle('scrolled', window.scrollY > 12);
+}
+window.addEventListener('scroll', handleNavScroll);
+handleNavScroll();
+
+/* ---------- Dark Mode ---------- */
+const THEME_KEY = 'novamart_theme';
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem(THEME_KEY, theme);
+  const icon = document.querySelector('#theme-toggle i');
+  if (icon) icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+}
+(function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+})();
+document.getElementById('theme-toggle')?.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+/* ---------- Mobile Menu ---------- */
+const mobileToggle = document.querySelector('.mobile-toggle');
+const mobileMenu = document.querySelector('.mobile-menu');
+mobileToggle?.addEventListener('click', () => {
+  mobileMenu?.classList.toggle('open');
+  const icon = mobileToggle.querySelector('i');
+  if (icon) icon.className = mobileMenu?.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+});
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => mobileMenu?.classList.remove('open'));
+});
+
+/* ---------- Scroll Reveal ---------- */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+function observeReveals() {
+  document.querySelectorAll('.reveal:not(.in-view)').forEach(el => revealObserver.observe(el));
+}
+document.addEventListener('DOMContentLoaded', observeReveals);
+// Re-scan after product cards are injected dynamically
+window.addEventListener('load', observeReveals);
+
+/* ---------- Scroll To Top ---------- */
+const scrollTopBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  if (!scrollTopBtn) return;
+  scrollTopBtn.classList.toggle('show', window.scrollY > 500);
+});
+scrollTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ---------- Animated Counters ---------- */
+function animateCount(el) {
+  const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+  const suffix = el.getAttribute('data-suffix') || '';
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCount(entry.target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.count-up').forEach(el => counterObserver.observe(el));
+
+/* ---------- Countdown Timer ---------- */
+function startCountdown(targetId, hoursFromNow = 48) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const deadline = Date.now() + hoursFromNow * 3600 * 1000;
+  const dEl = el.querySelector('[data-d]');
+  const hEl = el.querySelector('[data-h]');
+  const mEl = el.querySelector('[data-m]');
+  const sEl = el.querySelector('[data-s]');
+
+  function tick() {
+    const diff = Math.max(0, deadline - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    if (dEl) dEl.textContent = String(d).padStart(2, '0');
+    if (hEl) hEl.textContent = String(h).padStart(2, '0');
+    if (mEl) mEl.textContent = String(m).padStart(2, '0');
+    if (sEl) sEl.textContent = String(s).padStart(2, '0');
+    if (diff > 0) requestAnimationFrame(() => setTimeout(tick, 1000));
+  }
+  tick();
+}
+document.addEventListener('DOMContentLoaded', () => startCountdown('offer-countdown', 52));
+
+/* ---------- Testimonial Slider ---------- */
+(function testimonialSlider() {
+  const track = document.querySelector('.testimonial-track');
+  const dotsWrap = document.querySelector('.t-nav');
+  if (!track || !dotsWrap) return;
+  const slides = track.children.length;
+  let index = 0;
+
+  function goTo(i) {
+    index = (i + slides) % slides;
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dotsWrap.querySelectorAll('.t-dot').forEach((d, idx) => d.classList.toggle('active', idx === index));
+  }
+  dotsWrap.querySelectorAll('.t-dot').forEach((dot, idx) => dot.addEventListener('click', () => goTo(idx)));
+  track.style.display = 'flex';
+  track.style.transition = 'transform 500ms cubic-bezier(0.16,1,0.3,1)';
+
+  let autoplay = setInterval(() => goTo(index + 1), 5500);
+  track.closest('.testimonials')?.addEventListener('mouseenter', () => clearInterval(autoplay));
+  track.closest('.testimonials')?.addEventListener('mouseleave', () => { autoplay = setInterval(() => goTo(index + 1), 5500); });
+})();
+
+/* ---------- Filter Chips (Trending) ---------- */
+document.addEventListener('click', (e) => {
+  const chip = e.target.closest('.filter-chip');
+  if (!chip) return;
+  chip.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+
+  const filter = chip.getAttribute('data-filter');
+  if (!filter || typeof NOVA_PRODUCTS === 'undefined') return;
+  let list = NOVA_PRODUCTS;
+  if (filter === 'newest') list = NOVA_PRODUCTS.filter(p => p.tag === 'New');
+  else if (filter === 'popular') list = [...NOVA_PRODUCTS].sort((a, b) => b.reviews - a.reviews);
+  else if (filter === 'bestseller') list = NOVA_PRODUCTS.filter(p => p.tag === 'Best Seller');
+  else if (filter === 'featured') list = NOVA_PRODUCTS.filter(p => p.tag === 'Featured');
+  if (typeof renderProductGrid === 'function') {
+    renderProductGrid('trending-grid', list.length ? list : NOVA_PRODUCTS.slice(0, 8));
+    observeReveals();
+    if (typeof NovaCart !== 'undefined') {
+      NovaCart.updateBadge();
+      NovaCart.updateWishBadge();
+    }
+  }
+});
+
+/* ---------- Toast Notifications ---------- */
+function showToast(message, type = 'success') {
+  const stack = document.getElementById('toast-stack');
+  if (!stack) return;
+  const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('leaving');
+    setTimeout(() => toast.remove(), 250);
+  }, 2600);
+}
+
+/* ---------- Quick View Modal ---------- */
+(function quickView() {
+  const overlay = document.getElementById('quick-view');
+  if (!overlay) return;
+  const box = overlay.querySelector('.modal-box');
+
+  function open(product) {
+    box.innerHTML = `
+      <button class="modal-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-img"><img src="${product.img}" alt="${product.name}"></div>
+      <div class="modal-info">
+        <span class="pc-brand">${product.brand}</span>
+        <h3>${product.name}</h3>
+        <div class="pc-rating"><span class="stars">${ratingStars(product.rating)}</span> ${product.rating} (${product.reviews} reviews)</div>
+        <div class="pc-price-row">
+          <span class="pc-price">$${product.price.toFixed(2)}</span>
+          <span class="pc-old">$${product.oldPrice.toFixed(2)}</span>
+        </div>
+        <p class="desc">Crafted with premium materials and refined detailing, this ${product.category.toLowerCase()} piece from ${product.brand} blends everyday comfort with a modern silhouette.</p>
+        <div class="qty-row">
+          <div class="qty-selector">
+            <button data-qty-down>−</button>
+            <span data-qty-val>1</span>
+            <button data-qty-up>+</button>
+          </div>
+          ${stockLabel(product.stock)}
+        </div>
+        <button class="btn btn-primary btn-block" data-modal-add="${product.id}" ${product.stock === 'out' ? 'disabled' : ''}>
+          <i class="fa-solid fa-cart-shopping"></i> Add to Cart
+        </button>
+      </div>`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.body.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-quickview]');
+    if (trigger && typeof NOVA_PRODUCTS !== 'undefined') {
+      const product = NOVA_PRODUCTS.find(p => p.id === trigger.getAttribute('data-quickview'));
+      if (product) open(product);
+    }
+    if (e.target.closest('.modal-close') || e.target === overlay) close();
+
+    const qtyUp = e.target.closest('[data-qty-up]');
+    const qtyDown = e.target.closest('[data-qty-down]');
+    if (qtyUp || qtyDown) {
+      const span = box.querySelector('[data-qty-val]');
+      let val = parseInt(span.textContent, 10);
+      val = qtyUp ? val + 1 : Math.max(1, val - 1);
+      span.textContent = val;
+    }
+
+    const modalAdd = e.target.closest('[data-modal-add]');
+    if (modalAdd) {
+      const qty = parseInt(box.querySelector('[data-qty-val]').textContent, 10);
+      NovaCart.add(modalAdd.getAttribute('data-modal-add'), qty);
+      showToast('Added to cart', 'success');
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+})();
+
+/* ---------- Ripple Button Effect ---------- */
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn, .pc-add, .filter-chip');
+  if (!btn) return;
+  btn.classList.add('ripple');
+  const circle = document.createElement('span');
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  circle.className = 'ripple-circle';
+  circle.style.width = circle.style.height = `${size}px`;
+  circle.style.left = `${e.clientX - rect.left - size / 2}px`;
+  circle.style.top = `${e.clientY - rect.top - size / 2}px`;
+  btn.appendChild(circle);
+  setTimeout(() => circle.remove(), 620);
+});
+
+/* ---------- Hero Float Cards — subtle parallax on mouse move ---------- */
+(function heroParallax() {
+  const shelf = document.querySelector('.hero-shelf');
+  if (!shelf || window.matchMedia('(pointer: coarse)').matches) return;
+  const cards = shelf.querySelectorAll('.float-card');
+  document.querySelector('.hero')?.addEventListener('mousemove', (e) => {
+    const { innerWidth, innerHeight } = window;
+    const x = (e.clientX / innerWidth - 0.5) * 18;
+    const y = (e.clientY / innerHeight - 0.5) * 18;
+    cards.forEach((card, i) => {
+      const depth = (i + 1) * 0.5;
+      card.style.setProperty('--mx', `${x * depth}px`);
+      card.style.setProperty('--my', `${y * depth}px`);
+      card.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
+    });
+  });
+})();

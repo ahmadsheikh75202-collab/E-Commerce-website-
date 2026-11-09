@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaMart — Discover the Future of Online Shopping</title>
+<meta name="description" content="NovaMart is a premium online marketplace for electronics, fashion, footwear, and lifestyle goods — fast delivery, secure payment, easy returns.">
+
+<!-- Google Fonts: Poppins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+
+<!-- ================= LOADING SCREEN ================= -->
+<div id="loading-screen" aria-hidden="true">
+  <div class="loader-mark">
+    <div class="loader-ring"></div>
+    <span>NovaMart</span>
+  </div>
+</div>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">N</span>
+      <span class="logo-text">Nova<span>Mart</span></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html" class="active">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="categories.html">Categories</a>
+      <a href="shop.html#deals">Deals</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-search" role="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search products...">
+    </div>
+
+    <div class="nav-actions">
+      <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
+        <i class="fa-regular fa-heart"></i>
+        <span class="badge" id="wish-count">0</span>
+      </a>
+      <a href="cart.html" class="icon-btn" aria-label="Shopping cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="cart-count">0</span>
+      </a>
+      <a href="login.html" class="icon-btn" aria-label="Account">
+        <i class="fa-regular fa-user"></i>
+      </a>
+      <button class="icon-btn mobile-toggle" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <div class="mobile-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search products...">
+    </div>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="categories.html">Categories</a>
+    <a href="shop.html#deals">Deals</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">New Season Arrivals</span>
+        <h1>Discover the <em>Future</em> of Online Shopping</h1>
+        <p class="lead">Premium Products • Amazing Deals • Fast Delivery — everything you need, curated in one refined shelf.</p>
+        <div class="hero-btns">
+          <a href="shop.html" class="btn btn-primary">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="shop.html#deals" class="btn btn-outline">Explore Deals</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong class="count-up" data-count="25000" data-suffix="+">0</strong><span>Happy Customers</span></div>
+          <div><strong class="count-up" data-count="1200" data-suffix="+">0</strong><span>Premium Products</span></div>
+          <div><strong class="count-up" data-count="98" data-suffix="%">0</strong><span>Satisfaction Rate</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-glow-orb"></div>
+        <div class="hero-shelf">
+          <div class="float-card fc-1">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&q=80" alt="Headphones">
+            <div class="fc-name">Sonique Headphones</div>
+            <div class="fc-price">$149.00</div>
+          </div>
+          <div class="float-card fc-2">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80" alt="Sneakers">
+            <div class="fc-name">AeroFlex Sneakers</div>
+            <div class="fc-price">$89.99</div>
+          </div>
+          <div class="float-card fc-3">
+            <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=300&q=80" alt="Watch">
+            <div class="fc-name">Verona Watch</div>
+            <div class="fc-price">$112.00</div>
+          </div>
+          <div class="float-card fc-4">
+            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&q=80" alt="Backpack">
+            <div class="fc-name">Urbanite Backpack</div>
+            <div class="fc-price">$64.50</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES STRIP ================= -->
+  <section class="features">
+    <div class="container">
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+        <div><h4>Free Delivery</h4><p>On all orders over $50</p></div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+        <div><h4>24/7 Support</h4><p>Dedicated round-the-clock help</p></div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
+        <div><h4>Secure Payment</h4><p>100% protected transactions</p></div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-rotate-left"></i></div>
+        <div><h4>Easy Returns</h4><p>30-day hassle-free policy</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section class="categories">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Browse</span>
+          <h2>Shop by Category</h2>
+        </div>
+        <a href="categories.html" class="btn btn-outline btn-sm">View All <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="cat-grid">
+        <a href="shop.html?cat=electronics" class="cat-card large reveal">
+          <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=80" alt="Electronics">
+          <h4>Electronics</h4><span>128 items</span>
+        </a>
+        <a href="shop.html?cat=fashion" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=500&q=80" alt="Fashion">
+          <h4>Fashion</h4><span>96 items</span>
+        </a>
+        <a href="shop.html?cat=shoes" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&q=80" alt="Shoes">
+          <h4>Shoes</h4><span>74 items</span>
+        </a>
+        <a href="shop.html?cat=furniture" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&q=80" alt="Furniture">
+          <h4>Furniture</h4><span>52 items</span>
+        </a>
+        <a href="shop.html?cat=beauty" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500&q=80" alt="Beauty">
+          <h4>Beauty</h4><span>63 items</span>
+        </a>
+        <a href="shop.html?cat=gaming" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1600861195091-690c92f1d2cd?w=500&q=80" alt="Gaming">
+          <h4>Gaming</h4><span>41 items</span>
+        </a>
+        <a href="shop.html?cat=sports" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=500&q=80" alt="Sports">
+          <h4>Sports</h4><span>58 items</span>
+        </a>
+        <a href="shop.html?cat=accessories" class="cat-card reveal">
+          <img src="https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=500&q=80" alt="Accessories">
+          <h4>Accessories</h4><span>87 items</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURED PRODUCTS ================= -->
+  <section class="featured">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Handpicked</span>
+          <h2>Featured Products</h2>
+          <p>A curated shelf of our most-loved pieces this season.</p>
+        </div>
+        <a href="shop.html" class="btn btn-outline btn-sm">View All <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="product-grid" id="featured-grid">
+        <!-- Rendered by products.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPECIAL OFFER ================= -->
+  <section id="deals">
+    <div class="container">
+      <div class="offer">
+        <div class="offer-copy">
+          <span class="eyebrow">Limited Time Offer</span>
+          <h2>Up to 40% off select electronics</h2>
+          <p>Grab premium headphones, speakers, and gadgets before the shelf resets.</p>
+          <a href="shop.html?cat=electronics" class="btn btn-primary">Shop the Sale</a>
+        </div>
+        <div class="countdown" id="offer-countdown">
+          <div><strong data-d>02</strong><span>Days</span></div>
+          <div><strong data-h>00</strong><span>Hours</span></div>
+          <div><strong data-m>00</strong><span>Mins</span></div>
+          <div><strong data-s>00</strong><span>Secs</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRENDING PRODUCTS ================= -->
+  <section class="trending">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Right Now</span>
+          <h2>Trending Products</h2>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-chip active" data-filter="all">Newest</button>
+          <button class="filter-chip" data-filter="popular">Popular</button>
+          <button class="filter-chip" data-filter="bestseller">Best Seller</button>
+          <button class="filter-chip" data-filter="featured">Featured</button>
+        </div>
+      </div>
+      <div class="product-grid" id="trending-grid">
+        <!-- Rendered by products.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIALS ================= -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Reviews</span>
+          <h2>What Our Customers Say</h2>
+        </div>
+      </div>
+      <div class="testimonial-track">
+        <div class="t-card">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80" alt="Amara Reyes">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p class="quote">"NovaMart's checkout is the fastest I've used, and the packaging still feels premium every single time."</p>
+            <div class="who">Amara Reyes</div>
+            <div class="role">Verified Buyer, Electronics</div>
+          </div>
+        </div>
+        <div class="t-card">
+          <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=80" alt="Daniel Cho">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p class="quote">"Returns took two clicks. I didn't expect that level of ease from an online-only store."</p>
+            <div class="who">Daniel Cho</div>
+            <div class="role">Verified Buyer, Footwear</div>
+          </div>
+        </div>
+        <div class="t-card">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80" alt="Priya Nair">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p class="quote">"The quality bar is consistently high — every piece I've ordered has matched the photos exactly."</p>
+            <div class="who">Priya Nair</div>
+            <div class="role">Verified Buyer, Home</div>
+          </div>
+        </div>
+      </div>
+      <div class="t-nav">
+        <button class="t-dot active" aria-label="Testimonial 1"></button>
+        <button class="t-dot" aria-label="Testimonial 2"></button>
+        <button class="t-dot" aria-label="Testimonial 3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEWSLETTER ================= -->
+  <section class="newsletter-section">
+    <div class="container">
+      <div class="newsletter">
+        <h2>Get 10% off your first order</h2>
+        <p>Join the NovaMart list for early access to drops and deals.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed! Check your inbox.', 'success'); this.reset();">
+          <input type="email" required placeholder="Enter your email address">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand footer-col">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">N</span>
+          <span class="logo-text" style="color:#fff">Nova<span>Mart</span></span>
+        </a>
+        <p>A premium marketplace for electronics, fashion, and lifestyle goods — thoughtfully curated, quickly delivered.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Useful Links</h5>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="categories.html">Categories</a></li>
+          <li><a href="shop.html#deals">Deals</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="contact.html">Help Center</a></li>
+          <li><a href="cart.html">Track Order</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns &amp; Exchanges</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Newsletter</h5>
+        <p style="font-size:13.5px; margin-bottom:14px;">Deals and drops, once a week — no spam.</p>
+        <ul>
+          <li><a href="mailto:hello@novamart.com"><i class="fa-regular fa-envelope"></i> hello@novamart.com</a></li>
+          <li><a href="tel:+11234567890"><i class="fa-solid fa-phone"></i> +1 (123) 456-7890</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NovaMart. All rights reserved.</span>
+      <div class="pay-icons">
+        <i class="fa-brands fa-cc-visa"></i>
+        <i class="fa-brands fa-cc-mastercard"></i>
+        <i class="fa-brands fa-cc-paypal"></i>
+        <i class="fa-brands fa-cc-apple-pay"></i>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FLOATING UI ================= -->
+<button id="scroll-top" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
+<div id="toast-stack" aria-live="polite"></div>
+
+<!-- ================= QUICK VIEW MODAL ================= -->
+<div class="modal-overlay" id="quick-view">
+  <div class="modal-box"></div>
+</div>
+
+<!-- Scripts -->
+<script src="products.js"></script>
+<script src="cart.js"></script>
+<script src="search.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

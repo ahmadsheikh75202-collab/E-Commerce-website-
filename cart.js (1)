@@ -1,0 +1,104 @@
+/* ==========================================================================
+   NovaMart — Cart & Wishlist (localStorage-backed)
+   ========================================================================== */
+
+const NovaCart = {
+  KEY: 'novamart_cart',
+  WISH_KEY: 'novamart_wishlist',
+
+  get() {
+    try { return JSON.parse(localStorage.getItem(this.KEY)) || []; }
+    catch (e) { return []; }
+  },
+  save(items) { localStorage.setItem(this.KEY, JSON.stringify(items)); },
+
+  add(productId, qty = 1) {
+    const items = this.get();
+    const existing = items.find(i => i.id === productId);
+    if (existing) existing.qty += qty;
+    else items.push({ id: productId, qty });
+    this.save(items);
+    this.updateBadge();
+    return items;
+  },
+
+  remove(productId) {
+    const items = this.get().filter(i => i.id !== productId);
+    this.save(items);
+    this.updateBadge();
+  },
+
+  setQty(productId, qty) {
+    const items = this.get();
+    const item = items.find(i => i.id === productId);
+    if (item) item.qty = Math.max(1, qty);
+    this.save(items);
+    this.updateBadge();
+  },
+
+  count() { return this.get().reduce((sum, i) => sum + i.qty, 0); },
+
+  updateBadge() {
+    const badge = document.getElementById('cart-count');
+    if (badge) badge.textContent = this.count();
+  },
+
+  getWishlist() {
+    try { return JSON.parse(localStorage.getItem(this.WISH_KEY)) || []; }
+    catch (e) { return []; }
+  },
+  saveWishlist(items) { localStorage.setItem(this.WISH_KEY, JSON.stringify(items)); },
+
+  toggleWish(productId) {
+    let items = this.getWishlist();
+    const has = items.includes(productId);
+    items = has ? items.filter(id => id !== productId) : [...items, productId];
+    this.saveWishlist(items);
+    this.updateWishBadge();
+    return !has;
+  },
+
+  updateWishBadge() {
+    const badge = document.getElementById('wish-count');
+    if (badge) badge.textContent = this.getWishlist().length;
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  NovaCart.updateBadge();
+  NovaCart.updateWishBadge();
+
+  // Reflect saved wishlist state on rendered cards
+  const wishIds = NovaCart.getWishlist();
+  document.querySelectorAll('[data-wish]').forEach(btn => {
+    const id = btn.getAttribute('data-wish');
+    if (wishIds.includes(id)) {
+      btn.classList.add('active');
+      btn.innerHTML = '<i class="fa-solid fa-heart"></i>';
+    }
+  });
+
+  // Delegated click handling for add-to-cart / wishlist / quick view
+  document.body.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('[data-add]');
+    if (addBtn && !addBtn.disabled) {
+      const id = addBtn.getAttribute('data-add');
+      const product = typeof NOVA_PRODUCTS !== 'undefined' ? NOVA_PRODUCTS.find(p => p.id === id) : null;
+      NovaCart.add(id, 1);
+      if (typeof showToast === 'function') {
+        showToast(`${product ? product.name : 'Item'} added to cart`, 'success');
+      }
+    }
+
+    const wishBtn = e.target.closest('[data-wish]');
+    if (wishBtn) {
+      const id = wishBtn.getAttribute('data-wish');
+      const nowActive = NovaCart.toggleWish(id);
+      wishBtn.classList.toggle('active', nowActive);
+      wishBtn.innerHTML = nowActive ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
+      if (typeof showToast === 'function') {
+        showToast(nowActive ? 'Added to wishlist' : 'Removed from wishlist', 'success');
+      }
+    }
+  });
+});
